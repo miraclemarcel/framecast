@@ -18,7 +18,7 @@ import {
   windowModeSchema,
   type InvokeChannel,
   type InvokeMap
-} from '@shared/ipc'
+} from '@shared/ipc' 
 import type { SettingsPatch } from '@shared/settings'
 import type { IpcResult } from '@shared/types'
 import { Mp4Recorder } from '@services/capture/mp4-recorder'
