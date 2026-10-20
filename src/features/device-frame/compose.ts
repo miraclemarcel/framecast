@@ -17,7 +17,7 @@ function loadImage(src: string): Promise<HTMLImageElement> {
  * the screenshot's native resolution, so the screen content is not resampled.
  * A transparent margin leaves room for the drop shadow.
  */
-export async function composeFramedScreenshot(png: Uint8Array, frame: Settings['frame']): Promise<Uint8Array> {
+export async function composeFramedScreenshot(png: Uint8Array, frame: Settings['frame']): Promise<Uint8Array<ArrayBuffer>> {
   const shotUrl = URL.createObjectURL(new Blob([png as BlobPart], { type: 'image/png' }))
   try {
     const shot = await loadImage(shotUrl)

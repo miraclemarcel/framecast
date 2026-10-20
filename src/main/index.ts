@@ -1,4 +1,4 @@
-import { app, BrowserWindow, clipboard, nativeTheme, session, shell } from 'electron'
+import { app, BrowserWindow, clipboard, Menu, nativeTheme, session, shell } from 'electron'
 import { join } from 'node:path'
 import { AdbManager } from '@services/adb/adb-manager'
 import { defaultLocatorEnv } from '@services/adb/adb-locator'
@@ -101,6 +101,13 @@ function createWindow(): void {
   win.webContents.on('will-navigate', (event, url) => {
     if (url !== win.webContents.getURL()) event.preventDefault()
   })
+  // No application menu: its accelerators (Ctrl+R, Ctrl+W…) would swallow keys meant for the phone.
+  win.removeMenu()
+  if (!app.isPackaged) {
+    win.webContents.on('before-input-event', (_e, input) => {
+      if (input.type === 'keyDown' && input.key === 'F12') win.webContents.toggleDevTools()
+    })
+  }
   win.webContents.on('render-process-gone', (_e, details) => log.error(`Renderer gone: ${details.reason}`))
 
   if (process.env.ELECTRON_RENDERER_URL) void win.loadURL(process.env.ELECTRON_RENDERER_URL)
@@ -173,6 +180,7 @@ app.whenReady().then(async () => {
   // The renderer needs no browser permissions (camera, geolocation, notifications…).
   session.defaultSession.setPermissionRequestHandler((_wc, _permission, callback) => callback(false))
 
+  Menu.setApplicationMenu(null)
   registerIpc(ctx)
   wireEvents()
   createWindow()

@@ -1,12 +1,6 @@
 import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron'
-import {
-  CONTROL_CHANNEL,
-  EVENT_CHANNELS,
-  INVOKE_CHANNELS,
-  type EventChannel,
-  type FramecastApi,
-  type InvokeChannel
-} from '@shared/ipc'
+import type { EventChannel, FramecastApi, InvokeChannel } from '@shared/ipc'
+import { CONTROL_CHANNEL, EVENT_CHANNELS, INVOKE_CHANNELS } from '@shared/ipc-channels'
 
 /**
  * The only bridge between the sandboxed renderer and the main process.
