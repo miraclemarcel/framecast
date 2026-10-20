@@ -1,4 +1,4 @@
-import { app, BrowserWindow, clipboard, dialog, ipcMain, shell, type IpcMainInvokeEvent } from 'electron'
+import { app, clipboard, dialog, ipcMain, shell, type IpcMainInvokeEvent } from 'electron'
 import { resolve as resolvePath } from 'node:path'
 import { z, ZodError } from 'zod'
 import { AppError, errorInfo, toErrorInfo } from '@shared/errors'
@@ -6,6 +6,7 @@ import { partFileName } from '@shared/filenames'
 import {
   CONTROL_CHANNEL,
   controlCommandSchema,
+  compactSizeSchema,
   directoryPurposeSchema,
   enableTcpipSchema,
   externalUrlSchema,
@@ -14,6 +15,7 @@ import {
   serialArgSchema,
   wirelessConnectSchema,
   wirelessPairSchema,
+  windowModeSchema,
   type InvokeChannel,
   type InvokeMap
 } from '@shared/ipc'
@@ -236,8 +238,12 @@ export function registerIpc(ctx: AppContext): void {
     win?.setFullScreen(value)
     return win?.isFullScreen() ?? false
   })
-}
-
-export function broadcast<T>(win: BrowserWindow | null, channel: string, payload: T): void {
-  if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) win.webContents.send(channel, payload)
+  handle('window:setMode', windowModeSchema, ({ mode, dialog }) => {
+    const result = ctx.windows.setMode(mode)
+    if (mode === 'full' && dialog) ctx.windows.broadcast('ui:openDialog', dialog)
+    return result
+  })
+  handle('window:getMode', null, () => ctx.windows.mode)
+  handle('window:setCompactSize', compactSizeSchema, ({ width, height }) => ctx.windows.setCompactSize(width, height))
+  handle('window:minimize', null, () => ctx.windows.minimize())
 }

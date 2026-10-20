@@ -5,6 +5,7 @@ export type ShortcutAction =
   | { kind: 'fullscreen' }
   | { kind: 'screenshot'; framed: boolean }
   | { kind: 'record' }
+  | { kind: 'compact' }
 
 export interface ShortcutInfo {
   keys: string
@@ -26,6 +27,7 @@ export const SHORTCUTS: ShortcutInfo[] = [
   { keys: 'Alt+Shift+C', label: 'Framed screenshot' },
   { keys: 'Alt+V', label: 'Start/stop recording' },
   { keys: 'F11 / Alt+F', label: 'Full screen' },
+  { keys: 'Alt+M', label: 'Compact mode (frame only)' },
   { keys: 'Ctrl+V', label: 'Paste computer clipboard' },
   { keys: 'Right click', label: 'Back' },
   { keys: 'Middle click', label: 'Home' },
@@ -73,6 +75,8 @@ export function matchShortcut(e: KeyLike): ShortcutAction | null {
       return { kind: 'record' }
     case 'KeyF':
       return { kind: 'fullscreen' }
+    case 'KeyM':
+      return { kind: 'compact' }
     default:
       return null
   }

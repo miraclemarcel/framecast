@@ -27,16 +27,18 @@ Verified by driving the built and the packaged app with Playwright:
 
 ## Real-device checklist (USB)
 
-Status: **not yet verified on hardware.** No phone was connected during development.
+Device: **TECNO KL4, Android 14**, USB, Windows 11, system adb 36.0.2, 2026-10-20.
+Results come from the user's own session, as recorded in `framecast.log`. Items without evidence remain pending.
 
 | # | Check | Result |
 |---|---|---|
-| 1 | Device is discovered (and unauthorized state explained) | pending |
-| 2 | Live screen appears inside the frame | pending |
-| 3 | Touch: tap, drag, scroll, long press | pending |
-| 4 | Keyboard: text, Enter/Backspace, Ctrl+V paste | pending |
-| 5 | Rotation: frame and input follow | pending |
-| 6 | Screenshot and framed screenshot saved | pending |
-| 7 | Recording saved and playable | pending |
-| 8 | Unplug/replug: auto-reconnect | pending |
-| 9 | Closing the app leaves no adb shell / server process | pending |
+| 1 | Device is discovered | ✅ Listed and mirrored (`12922554AS009182`) |
+| 2 | Live screen appears inside the frame | ✅ Session started: `Device: [TECNO] TECNO KL4 (Android 14)` |
+| 3 | Touch: tap, drag, scroll, long press | pending confirmation |
+| 4 | Keyboard: text, Enter/Backspace, Ctrl+V paste | pending confirmation |
+| 5 | Rotation: frame and input follow | pending confirmation |
+| 6 | Screenshot and framed screenshot saved | pending confirmation |
+| 7 | Recording saved and playable | pending confirmation |
+| 8 | Unplug/replug: auto-reconnect | ✅ Session closed → retry waited for the device → mirroring resumed automatically |
+| 9 | Closing the app leaves no adb shell / server process | pending confirmation |
+| 10 | Compact mode (frame-only window) | pending confirmation |

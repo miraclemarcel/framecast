@@ -29,7 +29,11 @@ export const INVOKE_CHANNELS: readonly InvokeChannel[] = [
   'shell:showItemInFolder',
   'shell:openExternal',
   'shell:openLogs',
-  'window:setFullScreen'
+  'window:setFullScreen',
+  'window:setMode',
+  'window:getMode',
+  'window:setCompactSize',
+  'window:minimize'
 ]
 
 export const EVENT_CHANNELS: readonly EventChannel[] = [
@@ -40,6 +44,8 @@ export const EVENT_CHANNELS: readonly EventChannel[] = [
   'settings:changed',
   'window:fullscreen',
   'adb:status',
+  'window:mode',
+  'ui:openDialog',
   'toast'
 ]
 

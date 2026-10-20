@@ -47,7 +47,8 @@ export const DeviceFrame = memo(function DeviceFrame(props: DeviceFrameProps) {
         className={`pointer-events-none absolute inset-0 h-full w-full select-none ${shadow ? 'frame-shadow' : ''}`}
       />
       <div
-        className="absolute overflow-hidden bg-black"
+        // no-drag: in compact mode the bezel drags the window but the screen stays interactive.
+        className="no-drag absolute overflow-hidden bg-black"
         style={{
           left: s.x * scale,
           top: s.y * scale,

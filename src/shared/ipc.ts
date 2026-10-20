@@ -46,6 +46,15 @@ export const externalUrlSchema = z.object({
     .url()
     .refine((u) => ALLOWED_EXTERNAL_HOSTS.some((h) => new URL(u).hostname === h) && u.startsWith('https://'))
 })
+export const windowModeSchema = z.object({
+  mode: z.enum(['full', 'compact']),
+  /** Dialog to open in the full window after switching. */
+  dialog: z.enum(['settings', 'wireless', 'setup']).optional()
+})
+export const compactSizeSchema = z.object({
+  width: z.number().int().min(100).max(10000),
+  height: z.number().int().min(100).max(10000)
+})
 export const ALLOWED_EXTERNAL_HOSTS = ['developer.android.com', 'github.com', 'support.google.com']
 
 const i32 = z.number().int().min(-2147483648).max(2147483647)
@@ -144,6 +153,10 @@ export interface InvokeMap {
   'shell:openExternal': { args: z.infer<typeof externalUrlSchema>; result: void }
   'shell:openLogs': { args: void; result: void }
   'window:setFullScreen': { args: { value: boolean }; result: boolean }
+  'window:setMode': { args: z.infer<typeof windowModeSchema>; result: 'full' | 'compact' }
+  'window:getMode': { args: void; result: 'full' | 'compact' }
+  'window:setCompactSize': { args: z.infer<typeof compactSizeSchema>; result: void }
+  'window:minimize': { args: void; result: void }
 }
 
 /** Events pushed from main to renderer. */
@@ -155,6 +168,9 @@ export interface EventMap {
   'settings:changed': Settings
   'window:fullscreen': boolean
   'adb:status': AdbStatus
+  'window:mode': 'full' | 'compact'
+  /** Ask the full window to open a dialog (e.g. requested from compact mode). */
+  'ui:openDialog': 'settings' | 'wireless' | 'setup'
   toast: ToastMessage
 }
 

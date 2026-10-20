@@ -25,6 +25,8 @@ interface AppState {
   recording: RecordingStatus
   stats: StreamStats
   fullscreen: boolean
+  /** Which window this renderer is: the full app or the compact emulator-style window. */
+  windowMode: 'full' | 'compact'
   /** The phone screen has keyboard focus (typing goes to the device). */
   keyboardFocused: boolean
   dialog: DialogId
@@ -60,6 +62,7 @@ export const useApp = create<AppState>(() => ({
   recording: { active: false, parts: [], bytesWritten: 0 },
   stats: { fps: 0, kbps: 0 },
   fullscreen: false,
+  windowMode: window.location.hash === '#compact' ? 'compact' : 'full',
   keyboardFocused: false,
   dialog: null,
   toasts: []
@@ -87,7 +90,21 @@ export const actions = {
   },
 
   openDialog(dialog: DialogId): void {
+    // The compact window has no room for dialogs: open them in the full window instead.
+    if (dialog && get().windowMode === 'compact') {
+      void call('window:setMode', { mode: 'full', dialog }).catch(() => undefined)
+      return
+    }
     set({ dialog })
+  },
+
+  async setWindowMode(mode: 'full' | 'compact'): Promise<void> {
+    if (mode === 'compact' && get().fullscreen) await actions.toggleFullscreen(false)
+    await call('window:setMode', { mode }).catch((err) => actions.errorToast('Could not switch window', err))
+  },
+
+  toggleCompact(): void {
+    void actions.setWindowMode(get().windowMode === 'compact' ? 'full' : 'compact')
   },
 
   selectDevice(serial: string): void {
@@ -168,6 +185,9 @@ export async function initStore(): Promise<void> {
   api.on('adb:status', (adb) => set({ adb }))
   api.on('window:fullscreen', (fullscreen) => set({ fullscreen }))
   api.on('toast', (t) => actions.toast(t))
+  api.on('ui:openDialog', (dialog) => {
+    if (get().windowMode === 'full') set({ dialog })
+  })
   api.on('recording:status', (recording) => {
     const wasActive = get().recording.active
     set({ recording })

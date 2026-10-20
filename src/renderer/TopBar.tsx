@@ -1,4 +1,4 @@
-import { CircleHelp, Loader2, PanelRight, Play, Settings2, Square } from 'lucide-react'
+import { CircleHelp, Loader2, PanelRight, PictureInPicture2, Play, Settings2, Square } from 'lucide-react'
 import { Button, IconButton } from '@components/ui'
 import { DeviceSelector } from '@features/devices/DeviceSelector'
 import { actions, useApp } from './store'
@@ -50,6 +50,9 @@ export function TopBar() {
       </div>
       <div className="flex-1" />
       <div className="no-drag flex items-center gap-0.5">
+        <IconButton label="Compact mode (frame only)" shortcut="Alt+M" tooltipSide="bottom" onClick={() => void actions.setWindowMode('compact')}>
+          <PictureInPicture2 size={17} />
+        </IconButton>
         <IconButton label="Setup guide" tooltipSide="bottom" onClick={() => actions.openDialog('setup')}>
           <CircleHelp size={17} />
         </IconButton>

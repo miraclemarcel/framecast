@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Mirror and control a real Android phone inside a realistic device frame.",
   "author": "miraclemarcel",
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE",
   "private": true,
   "main": "./out/main/index.js",
   "scripts": {
@@ -67,6 +67,10 @@
       {
         "from": "licenses",
         "to": "licenses"
+      },
+      {
+        "from": "LICENSE",
+        "to": "LICENSE.txt"
       }
     ],
     "asar": true,
@@ -88,8 +92,18 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "FrameCast",
-      "artifactName": "FrameCast-Setup-${version}-x64.${ext}",
-      "uninstallDisplayName": "FrameCast"
-    }
+      "artifactName": "FrameCast-Setup-x64.${ext}",
+      "uninstallDisplayName": "FrameCast",
+      "license": "LICENSE"
+    },
+    "publish": null
+  },
+  "homepage": "https://github.com/miraclemarcel/framecast",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/miraclemarcel/framecast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/miraclemarcel/framecast/issues"
   }
 }

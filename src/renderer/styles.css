@@ -84,6 +84,12 @@ body {
   overflow: hidden;
 }
 
+/* Compact mode: a transparent window that shows only the device and its toolbar. */
+html.compact,
+html.compact body {
+  background: transparent;
+}
+
 .drag {
   -webkit-app-region: drag;
 }

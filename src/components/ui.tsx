@@ -49,7 +49,7 @@ export function IconButton({
   label: string
   shortcut?: string
   active?: boolean
-  tooltipSide?: 'top' | 'bottom'
+  tooltipSide?: 'top' | 'bottom' | 'left'
 }) {
   return (
     <Tooltip label={label} shortcut={shortcut} side={tooltipSide}>
@@ -77,7 +77,7 @@ export function Tooltip({
 }: {
   label: string
   shortcut?: string
-  side?: 'top' | 'bottom'
+  side?: 'top' | 'bottom' | 'left'
   children: ReactNode
 }) {
   return (
@@ -86,8 +86,10 @@ export function Tooltip({
       <span
         role="tooltip"
         className={cx(
-          'pointer-events-none absolute left-1/2 z-50 -translate-x-1/2 rounded-md border border-line bg-overlay px-2 py-1 text-xs whitespace-nowrap text-fg opacity-0 shadow-lg transition-opacity delay-300 group-hover/tt:opacity-100',
-          side === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'
+          'pointer-events-none absolute z-50 rounded-md border border-line bg-overlay px-2 py-1 text-xs whitespace-nowrap text-fg opacity-0 shadow-lg transition-opacity delay-300 group-hover/tt:opacity-100',
+          side === 'top' && 'bottom-full left-1/2 mb-2 -translate-x-1/2',
+          side === 'bottom' && 'top-full left-1/2 mt-2 -translate-x-1/2',
+          side === 'left' && 'top-1/2 right-full mr-2 -translate-y-1/2'
         )}
       >
         {label}

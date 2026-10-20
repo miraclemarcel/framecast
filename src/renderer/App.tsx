@@ -11,7 +11,7 @@ import { BottomBar } from './BottomBar'
 import { TopBar } from './TopBar'
 import { actions, useApp } from './store'
 
-function useTheme(): void {
+export function useTheme(): void {
   const theme = useApp((s) => s.settings.theme)
   useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: dark)')
@@ -19,6 +19,7 @@ function useTheme(): void {
       const dark = theme === 'dark' || (theme === 'system' && media.matches)
       document.documentElement.classList.toggle('dark', dark)
       document.documentElement.classList.toggle('light', !dark)
+      document.documentElement.classList.toggle('compact', useApp.getState().windowMode === 'compact')
     }
     apply()
     media.addEventListener('change', apply)
@@ -27,7 +28,7 @@ function useTheme(): void {
 }
 
 /** App-level shortcuts, handled before keys reach the phone input. */
-function useShortcuts(): void {
+export function useShortcuts(): void {
   useEffect(() => {
     const onKey = (e: KeyboardEvent): void => {
       const state = useApp.getState()
@@ -40,7 +41,10 @@ function useShortcuts(): void {
       const streaming = state.mirror.phase === 'streaming'
       switch (action.kind) {
         case 'fullscreen':
-          void actions.toggleFullscreen()
+          if (state.windowMode === 'full') void actions.toggleFullscreen()
+          break
+        case 'compact':
+          actions.toggleCompact()
           break
         case 'control':
           if (streaming) window.framecast.control(action.command)
@@ -70,7 +74,7 @@ export function App() {
       {!fullscreen && <TopBar />}
       <main className="relative flex min-h-0 flex-1">
         <div className="group relative min-w-0 flex-1">
-          <DeviceStage fullscreen={fullscreen} />
+          <DeviceStage variant={fullscreen ? 'fullscreen' : 'workspace'} />
           {fullscreen && (
             // Floating controls appear when the pointer nears the bottom edge.
             <div className="absolute inset-x-0 bottom-0 flex h-28 items-end justify-center pb-4 opacity-0 transition-opacity hover:opacity-100">

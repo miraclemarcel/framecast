@@ -23,23 +23,38 @@ function useElementSize<T extends HTMLElement>(): [React.RefObject<T | null>, Si
   return [ref, size]
 }
 
-/** The workspace: a centered device frame wrapping the live screen, scaled to the window. */
-export function DeviceStage({ fullscreen }: { fullscreen: boolean }) {
+/**
+ * Size of the content shown in the frame: the live video when mirroring,
+ * otherwise the selected phone's real screen proportions (portrait).
+ */
+export function useStageVideoSize(): Size {
+  const videoSize = useApp((s) => s.mirror.videoSize)
+  const details = useApp((s) => s.devices.find((d) => d.serial === (s.mirror.serial ?? s.selectedSerial))?.details)
+  if (videoSize) return videoSize
+  if (details?.screenWidth && details.screenHeight) {
+    return {
+      width: Math.min(details.screenWidth, details.screenHeight),
+      height: Math.max(details.screenWidth, details.screenHeight)
+    }
+  }
+  return DEFAULT_VIDEO
+}
+
+export type StageVariant = 'workspace' | 'fullscreen' | 'compact'
+
+/**
+ * The device frame wrapping the live screen.
+ *  - workspace / fullscreen: fit to the available area;
+ *  - compact: drawn at a fixed `scale` (the window is sized around it).
+ */
+export function DeviceStage({ variant, scale }: { variant: StageVariant; scale?: number }) {
   const [ref, container] = useElementSize<HTMLDivElement>()
   const frame = useApp((s) => s.settings.frame)
   const zoom = useApp((s) => s.settings.display.scaling)
   const mirror = useApp((s) => s.mirror)
-  const selected = useApp((s) => s.devices.find((d) => d.serial === (s.mirror.serial ?? s.selectedSerial)))
   const [videoVisible, setVideoVisible] = useState(false)
   const streaming = mirror.phase === 'streaming'
-
-  // Without video yet, preview the frame at the selected phone's real proportions.
-  const details = selected?.details
-  const video: Size =
-    mirror.videoSize ??
-    (details?.screenWidth && details.screenHeight
-      ? { width: Math.min(details.screenWidth, details.screenHeight), height: Math.max(details.screenWidth, details.screenHeight) }
-      : DEFAULT_VIDEO)
+  const video = useStageVideoSize()
 
   useEffect(() => {
     if (!streaming) setVideoVisible(false)
@@ -59,12 +74,20 @@ export function DeviceStage({ fullscreen }: { fullscreen: boolean }) {
     })
   }, [])
 
+  const fullscreen = variant === 'fullscreen'
+  const compact = variant === 'compact'
   const showFrame = !fullscreen || frame.frameInFullscreen
   const hideStatus = streaming && videoVisible
 
+  const background = fullscreen ? 'bg-black' : compact ? '' : 'workspace-bg'
+  const ready = compact || container.width > 0
+
   return (
-    <div ref={ref} className={`relative flex h-full w-full items-center justify-center overflow-auto ${fullscreen ? 'bg-black' : 'workspace-bg'}`}>
-      {container.width > 0 && (
+    <div
+      ref={ref}
+      className={`relative flex items-center justify-center ${compact ? 'drag' : 'h-full w-full overflow-auto'} ${background}`}
+    >
+      {ready && (
         <DeviceFrame
           video={video}
           profile={showFrame ? frame.profile : 'none'}
@@ -72,8 +95,8 @@ export function DeviceStage({ fullscreen }: { fullscreen: boolean }) {
           showButtons={frame.showButtons}
           shadow={frame.showShadow && !fullscreen}
           container={container}
-          padding={fullscreen ? 0 : Math.max(24, Math.min(container.width, container.height) * 0.05)}
-          zoom={fullscreen ? 'fit' : zoom}
+          padding={fullscreen || compact ? 0 : Math.max(24, Math.min(container.width, container.height) * 0.05)}
+          zoom={compact ? (scale ?? 0.35) : fullscreen ? 'fit' : zoom}
           screenOverlay={hideStatus ? null : <div className="absolute inset-0"><ScreenStatus /></div>}
         >
           <MirrorScreen

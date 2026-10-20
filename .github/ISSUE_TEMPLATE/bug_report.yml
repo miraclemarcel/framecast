@@ -1,0 +1,39 @@
+name: Bug report
+description: Something doesn't work as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: FrameCast version
+      placeholder: "1.0.0 (Settings → About)"
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 23H2
+  - type: input
+    id: phone
+    attributes:
+      label: Phone model and Android version
+      placeholder: Pixel 8, Android 15
+  - type: dropdown
+    id: connection
+    attributes:
+      label: Connection
+      options: [USB, Wi-Fi (pairing), Wi-Fi (tcpip)]
+  - type: textarea
+    id: log
+    attributes:
+      label: Log excerpt
+      description: Settings → About → Open log folder → framecast.log. The log contains no screen content or typed text, but check it before posting.
+      render: text

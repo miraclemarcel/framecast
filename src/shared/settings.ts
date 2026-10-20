@@ -30,7 +30,10 @@ export const settingsSchema = z.object({
     .object({
       /** "fit" scales the device to the window; a number is a fixed zoom (1 = 100%). */
       scaling: z.union([z.literal('fit'), z.number().min(0.25).max(2)]).default('fit'),
-      showInfoPanel: z.boolean().default(true)
+      showInfoPanel: z.boolean().default(true),
+      /** Compact mode: length of the device's long side in pixels. */
+      compactSize: z.number().int().min(320).max(2000).default(760),
+      compactAlwaysOnTop: z.boolean().default(false)
     })
     .prefault({}),
   capture: z

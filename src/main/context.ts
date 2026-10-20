@@ -5,10 +5,13 @@ import type { ProcessRegistry } from '@services/process/process-registry'
 import type { Logger } from './logger'
 import type { MirrorController } from './mirror-controller'
 import type { SettingsStore } from './settings-store'
+import type { WindowManager } from './windows'
 
 /** Long-lived services shared by the IPC handlers. */
 export interface AppContext {
+  /** The visible window (full or compact). */
   window(): BrowserWindow | null
+  windows: WindowManager
   logger: Logger
   settings: SettingsStore
   registry: ProcessRegistry

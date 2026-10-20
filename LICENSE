@@ -1,0 +1,90 @@
+FrameCast Source-Available License
+Version 1.0
+
+Copyright (c) 2026 miraclemarcel. All rights reserved, except as expressly
+granted below.
+
+This license lets everyone use FrameCast for free, read and change its code,
+and help improve it — but not sell it or pass copies of it on.
+
+1. DEFINITIONS
+
+   "Software" means the FrameCast source code, compiled programs, installers,
+   documentation and artwork published in the official repository
+   (https://github.com/miraclemarcel/framecast) and its official releases.
+
+   "Third-Party Components" means the software listed in
+   THIRD_PARTY_NOTICES.md (including scrcpy-server and Android Platform-Tools).
+   They are not covered by this license; each is governed by its own license.
+
+   "Contribution" means any code, documentation, artwork or other material you
+   submit to the official repository, for example through a pull request.
+
+2. WHAT YOU MAY DO
+
+   Free of charge, and subject to the conditions in section 3, you may:
+
+   a. download, install and use the Software on any number of your own
+      computers, for personal, educational, non-profit or internal business
+      purposes;
+   b. read, study and modify the Software for your own use;
+   c. fork the official repository on GitHub and work on that fork for the
+      purpose of preparing Contributions to the official project;
+   d. submit Contributions to the official project.
+
+3. WHAT YOU MAY NOT DO
+
+   You may not, without prior written permission from the copyright holder:
+
+   a. sell, rent, lease, license or sublicense the Software or any modified
+      version of it, or charge any fee for it, for access to it, or for a
+      product or service that includes it;
+   b. redistribute the Software or any modified version of it, in source or
+      binary form — including uploading installers or builds to other
+      websites, app stores, file-sharing services or package registries, or
+      bundling it with other software. Linking to the official repository or
+      its release page is always allowed. A fork kept on GitHub under
+      section 2(c) is not a redistribution under this clause, provided it is
+      not offered to others as a separate product;
+   c. remove, obscure or alter any copyright notice, this license, or the
+      notices in THIRD_PARTY_NOTICES.md;
+   d. use the name "FrameCast" or its logo to name, endorse or promote any
+      product or service derived from the Software.
+
+4. CONTRIBUTIONS
+
+   By submitting a Contribution, you confirm that you have the right to do so,
+   and you grant the copyright holder a perpetual, worldwide, non-exclusive,
+   royalty-free, irrevocable license to use, reproduce, modify, publish,
+   distribute and sublicense your Contribution as part of the Software, under
+   this license or any other license the copyright holder chooses. You keep
+   the copyright in your Contribution.
+
+5. THIRD-PARTY COMPONENTS
+
+   Nothing in this license limits the rights you have under the licenses of
+   the Third-Party Components.
+
+6. TERMINATION
+
+   Your rights under this license end automatically if you break any of its
+   terms. If you stop the breach within 30 days of becoming aware of it, your
+   rights are reinstated, unless the copyright holder has notified you in
+   writing that they are terminated.
+
+7. NO WARRANTY
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+
+8. LIMITATION OF LIABILITY
+
+   IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
+   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+   OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+   THE USE OF OR OTHER DEALINGS IN THE SOFTWARE, INCLUDING ANY EFFECT ON A
+   CONNECTED DEVICE.
+
+For permission to use the Software in ways not covered by this license,
+open an issue at https://github.com/miraclemarcel/framecast/issues.
