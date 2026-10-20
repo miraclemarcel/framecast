@@ -19,6 +19,8 @@ export class WindowManager {
   private main: BrowserWindow | null = null
   private compact: BrowserWindow | null = null
   private _mode: WindowMode = 'full'
+  /** Cursor offset from the window origin while the compact window is being dragged. */
+  private drag: { dx: number; dy: number; width: number; height: number } | null = null
   /** Called after the visible window changes (e.g. to request a fresh key frame). */
   onActiveChanged: () => void = () => undefined
 
@@ -214,6 +216,32 @@ export class WindowManager {
     const win = this.compact ?? this.main
     const area = win ? screen.getDisplayMatching(win.getBounds()).workArea : screen.getPrimaryDisplay().workArea
     return area.height
+  }
+
+  /**
+   * Manual window dragging for compact mode. CSS drag regions are not used there:
+   * in a transparent window Windows ignores no-drag holes, which made the phone
+   * screen move the window instead of receiving touches.
+   * Positions come from the OS cursor, so this is correct at any display scaling.
+   */
+  beginDrag(): void {
+    const win = this.compact
+    if (!win || win.isDestroyed()) return
+    const cursor = screen.getCursorScreenPoint()
+    const b = win.getBounds()
+    this.drag = { dx: cursor.x - b.x, dy: cursor.y - b.y, width: b.width, height: b.height }
+  }
+
+  dragTo(): void {
+    const win = this.compact
+    if (!this.drag || !win || win.isDestroyed()) return
+    const cursor = screen.getCursorScreenPoint()
+    // setBounds with the original size: setPosition can drift the size on scaled displays.
+    win.setBounds({ x: cursor.x - this.drag.dx, y: cursor.y - this.drag.dy, width: this.drag.width, height: this.drag.height })
+  }
+
+  endDrag(): void {
+    this.drag = null
   }
 
   minimize(): void {

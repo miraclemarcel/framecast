@@ -50,3 +50,6 @@ export const EVENT_CHANNELS: readonly EventChannel[] = [
 ]
 
 export const CONTROL_CHANNEL = 'mirror:control'
+
+/** Compact window dragging (fire-and-forget, sent on every pointer move). */
+export const WINDOW_DRAG_CHANNEL = 'window:drag'

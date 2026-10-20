@@ -177,7 +177,7 @@ export interface EventMap {
 export type InvokeChannel = keyof InvokeMap
 export type EventChannel = keyof EventMap
 
-export { CONTROL_CHANNEL, EVENT_CHANNELS, INVOKE_CHANNELS } from './ipc-channels'
+export { CONTROL_CHANNEL, EVENT_CHANNELS, INVOKE_CHANNELS, WINDOW_DRAG_CHANNEL } from './ipc-channels'
 
 /** The API exposed on `window.framecast` by the preload script. */
 export interface FramecastApi {
@@ -187,6 +187,8 @@ export interface FramecastApi {
   ): Promise<IpcResult<InvokeMap[C]['result']>>
   on<C extends EventChannel>(channel: C, listener: (payload: EventMap[C]) => void): () => void
   control(command: ControlCommand): void
+  /** Move the compact window with the cursor: 'start' on press, 'move' while held, 'end' on release. */
+  dragWindow(phase: 'start' | 'move' | 'end'): void
 }
 
 export type { AppErrorInfo }

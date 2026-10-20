@@ -5,6 +5,7 @@ import { AppError, errorInfo, toErrorInfo } from '@shared/errors'
 import { partFileName } from '@shared/filenames'
 import {
   CONTROL_CHANNEL,
+  WINDOW_DRAG_CHANNEL,
   controlCommandSchema,
   compactSizeSchema,
   directoryPurposeSchema,
@@ -163,6 +164,13 @@ export function registerIpc(ctx: AppContext): void {
       return
     }
     ctx.mirror.control(cmd)
+  })
+
+  ipcMain.on(WINDOW_DRAG_CHANNEL, (event, phase: unknown) => {
+    if (!isTrusted(event)) return
+    if (phase === 'start') ctx.windows.beginDrag()
+    else if (phase === 'move') ctx.windows.dragTo()
+    else if (phase === 'end') ctx.windows.endDrag()
   })
 
   // --- Capture -----------------------------------------------------------

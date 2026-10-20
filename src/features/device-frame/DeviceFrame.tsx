@@ -1,4 +1,4 @@
-import { memo, useMemo, type ReactNode } from 'react'
+import { memo, useMemo, type HTMLAttributes, type ReactNode } from 'react'
 import type { FrameFinishId, FrameProfileId } from '@shared/settings'
 import type { Size } from '@shared/types'
 import { computeFrameGeometry, fitScale } from './geometry'
@@ -18,6 +18,12 @@ export interface DeviceFrameProps {
   children: ReactNode
   /** Content drawn over the screen but under the camera cutout (status overlays). */
   screenOverlay?: ReactNode
+  /**
+   * Pointer handlers for the device body (bezel). The screen sits above this
+   * layer, so only presses on the frame itself reach them (used to move the
+   * compact window).
+   */
+  bezelHandlers?: HTMLAttributes<HTMLDivElement>
 }
 
 /**
@@ -46,9 +52,23 @@ export const DeviceFrame = memo(function DeviceFrame(props: DeviceFrameProps) {
         draggable={false}
         className={`pointer-events-none absolute inset-0 h-full w-full select-none ${shadow ? 'frame-shadow' : ''}`}
       />
+      {props.bezelHandlers && (
+        <div
+          {...props.bezelHandlers}
+          aria-hidden="true"
+          className="absolute cursor-grab active:cursor-grabbing"
+          style={{
+            left: geom.body.x * scale,
+            top: geom.body.y * scale,
+            width: geom.body.width * scale,
+            height: geom.body.height * scale,
+            borderRadius: geom.body.radius * scale,
+            touchAction: 'none'
+          }}
+        />
+      )}
       <div
-        // no-drag: in compact mode the bezel drags the window but the screen stays interactive.
-        className="no-drag absolute overflow-hidden bg-black"
+        className="absolute overflow-hidden bg-black"
         style={{
           left: s.x * scale,
           top: s.y * scale,

@@ -1,7 +1,7 @@
 {
   "name": "framecast",
   "productName": "FrameCast",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Mirror and control a real Android phone inside a realistic device frame.",
   "author": "miraclemarcel",
   "license": "SEE LICENSE IN LICENSE",

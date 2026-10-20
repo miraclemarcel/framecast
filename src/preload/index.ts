@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron'
 import type { EventChannel, FramecastApi, InvokeChannel } from '@shared/ipc'
-import { CONTROL_CHANNEL, EVENT_CHANNELS, INVOKE_CHANNELS } from '@shared/ipc-channels'
+import { CONTROL_CHANNEL, EVENT_CHANNELS, INVOKE_CHANNELS, WINDOW_DRAG_CHANNEL } from '@shared/ipc-channels'
 
 /**
  * The only bridge between the sandboxed renderer and the main process.
@@ -19,7 +19,9 @@ const api: FramecastApi = {
     return () => ipcRenderer.removeListener(channel, wrapped)
   }) as FramecastApi['on'],
 
-  control: (command) => ipcRenderer.send(CONTROL_CHANNEL, command)
+  control: (command) => ipcRenderer.send(CONTROL_CHANNEL, command),
+
+  dragWindow: (phase) => ipcRenderer.send(WINDOW_DRAG_CHANNEL, phase)
 }
 
 contextBridge.exposeInMainWorld('framecast', api)

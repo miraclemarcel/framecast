@@ -113,9 +113,10 @@ export function MirrorScreen(props: MirrorScreenProps) {
   }
 
   const onPointerDown = (e: ReactPointerEvent<HTMLCanvasElement>): void => {
+    // preventDefault keeps the browser from moving focus away from the phone input on mousedown.
+    e.preventDefault()
     inputRef.current?.focus({ preventScroll: true })
     if (!latest.current.streaming) return
-    e.preventDefault()
     const p = toVideo(e.clientX, e.clientY)
     if (!p) return
 

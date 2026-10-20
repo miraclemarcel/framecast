@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type HTMLAttributes } from 'react'
 import type { Size } from '@shared/types'
 import { DeviceFrame } from '../device-frame/DeviceFrame'
 import { actions, useApp } from '../../renderer/store'
@@ -47,7 +47,16 @@ export type StageVariant = 'workspace' | 'fullscreen' | 'compact'
  *  - workspace / fullscreen: fit to the available area;
  *  - compact: drawn at a fixed `scale` (the window is sized around it).
  */
-export function DeviceStage({ variant, scale }: { variant: StageVariant; scale?: number }) {
+export function DeviceStage({
+  variant,
+  scale,
+  bezelHandlers
+}: {
+  variant: StageVariant
+  scale?: number
+  /** Compact mode: pressing the frame (not the screen) moves the window. */
+  bezelHandlers?: HTMLAttributes<HTMLDivElement>
+}) {
   const [ref, container] = useElementSize<HTMLDivElement>()
   const frame = useApp((s) => s.settings.frame)
   const zoom = useApp((s) => s.settings.display.scaling)
@@ -85,7 +94,7 @@ export function DeviceStage({ variant, scale }: { variant: StageVariant; scale?:
   return (
     <div
       ref={ref}
-      className={`relative flex items-center justify-center ${compact ? 'drag' : 'h-full w-full overflow-auto'} ${background}`}
+      className={`relative flex items-center justify-center ${compact ? '' : 'h-full w-full overflow-auto'} ${background}`}
     >
       {ready && (
         <DeviceFrame
@@ -98,6 +107,7 @@ export function DeviceStage({ variant, scale }: { variant: StageVariant; scale?:
           padding={fullscreen || compact ? 0 : Math.max(24, Math.min(container.width, container.height) * 0.05)}
           zoom={compact ? (scale ?? 0.35) : fullscreen ? 'fit' : zoom}
           screenOverlay={hideStatus ? null : <div className="absolute inset-0"><ScreenStatus /></div>}
+          bezelHandlers={bezelHandlers}
         >
           <MirrorScreen
             videoSize={mirror.videoSize ?? null}

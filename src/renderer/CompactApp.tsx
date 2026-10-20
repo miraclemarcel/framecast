@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef, type HTMLAttributes } from 'react'
 import {
   BellDot,
   Camera,
@@ -53,12 +53,38 @@ function RecentsIcon() {
   )
 }
 
+/** Pointer handlers that move the window while the device frame is held. */
+function useWindowDrag(): HTMLAttributes<HTMLDivElement> {
+  const dragging = useRef(false)
+  const end = (e: React.PointerEvent<HTMLDivElement>): void => {
+    if (!dragging.current) return
+    dragging.current = false
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId)
+    window.framecast.dragWindow('end')
+  }
+  return {
+    onPointerDown: (e) => {
+      if (e.button !== 0) return
+      e.preventDefault()
+      dragging.current = true
+      e.currentTarget.setPointerCapture(e.pointerId)
+      window.framecast.dragWindow('start')
+    },
+    onPointerMove: () => {
+      if (dragging.current) window.framecast.dragWindow('move')
+    },
+    onPointerUp: end,
+    onPointerCancel: end,
+    onLostPointerCapture: end
+  }
+}
+
 const Sep = () => <div className="mx-auto my-1 h-px w-6 shrink-0 bg-line" />
 
 /**
  * Emulator-style window: just the device frame and a vertical toolbar on its
- * right. The window is frameless and transparent and is resized to fit; drag
- * the device body to move it.
+ * right. The window is frameless and transparent and is resized to fit. Hold
+ * the device frame to move it; the screen itself only receives touches.
  */
 export function CompactApp() {
   useTheme()
@@ -69,6 +95,7 @@ export function CompactApp() {
   const recording = useApp((s) => s.recording.active)
   const video = useStageVideoSize()
   const off = !streaming
+  const bezelHandlers = useWindowDrag()
 
   // Size the device so its long side is `compactSize`, but never larger than the screen.
   const layout = useMemo(() => {
@@ -97,11 +124,11 @@ export function CompactApp() {
   }
 
   return (
-    <div className="drag flex h-full w-full items-center" style={{ padding: PAD, gap: GAP }}>
-      <DeviceStage variant="compact" scale={layout.scale} />
+    <div className="flex h-full w-full items-center" style={{ padding: PAD, gap: GAP }}>
+      <DeviceStage variant="compact" scale={layout.scale} bezelHandlers={bezelHandlers} />
       <nav
         aria-label="Device controls"
-        className="no-drag flex shrink-0 flex-col overflow-y-auto rounded-2xl border border-line bg-surface/95 py-1.5 shadow-xl backdrop-blur [&::-webkit-scrollbar]:hidden"
+        className="flex shrink-0 flex-col overflow-y-auto rounded-2xl border border-line bg-surface/95 py-1.5 shadow-xl backdrop-blur [&::-webkit-scrollbar]:hidden"
         style={{ width: TOOLBAR_W, maxHeight: Math.max(layout.frameH, TOOLBAR_MIN_H) }}
       >
         <div className="flex flex-col items-center">
