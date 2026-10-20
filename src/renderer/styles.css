@@ -1,0 +1,136 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #0b0d10;
+  --surface: #111418;
+  --raised: #171b21;
+  --overlay: #1d222a;
+  --border: #242a33;
+  --border-strong: #323a46;
+  --fg: #e6e9ee;
+  --fg-muted: #9098a5;
+  --fg-subtle: #646d7a;
+  --accent: #5b9cff;
+  --accent-fg: #06101f;
+  --accent-soft: rgba(91, 156, 255, 0.14);
+  --ok: #3fcf8e;
+  --warn: #f2b84b;
+  --danger: #f2685f;
+  --workspace-dot: rgba(255, 255, 255, 0.045);
+  --frame-shadow: rgba(0, 0, 0, 0.55);
+  color-scheme: dark;
+}
+
+:root.light {
+  --bg: #eef0f3;
+  --surface: #f7f8fa;
+  --raised: #ffffff;
+  --overlay: #ffffff;
+  --border: #dde1e7;
+  --border-strong: #c7cdd6;
+  --fg: #171a1f;
+  --fg-muted: #5b6370;
+  --fg-subtle: #8a929e;
+  --accent: #2f6fe0;
+  --accent-fg: #ffffff;
+  --accent-soft: rgba(47, 111, 224, 0.12);
+  --ok: #17a36b;
+  --warn: #c98a12;
+  --danger: #d6463c;
+  --workspace-dot: rgba(0, 0, 0, 0.06);
+  --frame-shadow: rgba(30, 40, 60, 0.28);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-overlay: var(--overlay);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+  --font-sans: 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Mono', 'Cascadia Code', Consolas, ui-monospace, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  overflow: hidden;
+}
+
+.drag {
+  -webkit-app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.workspace-bg {
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--workspace-dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.frame-shadow {
+  filter: drop-shadow(0 24px 40px var(--frame-shadow)) drop-shadow(0 4px 10px var(--frame-shadow));
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@keyframes fc-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.animate-rec {
+  animation: fc-pulse 1.4s ease-in-out infinite;
+}
