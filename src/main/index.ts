@@ -73,7 +73,8 @@ function createWindow(): void {
     backgroundColor: titleBarColors().color,
     titleBarStyle: 'hidden',
     titleBarOverlay: { ...titleBarColors(), height: 44 },
-    icon: join(__dirname, '../../build/icon.png'),
+    // Packaged builds use the icon embedded in the .exe.
+    icon: app.isPackaged ? undefined : join(__dirname, '../../build/icon.png'),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,

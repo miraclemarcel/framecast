@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import { Button, cx, Dialog, Select, TextInput } from '@components/ui'
 import { call, errorInfoOf } from '../../renderer/api'
@@ -22,7 +22,9 @@ const parsePort = (v: string): number => Number.parseInt(v, 10)
 export function WirelessDialog() {
   const open = useApp((s) => s.dialog === 'wireless')
   const conn = useApp((s) => s.settings.connection)
-  const usbDevices = useApp((s) => s.devices.filter((d) => d.kind === 'usb' && d.state === 'device'))
+  const devices = useApp((s) => s.devices)
+  // Derive outside the selector: a selector returning a new array each time loops forever.
+  const usbDevices = useMemo(() => devices.filter((d) => d.kind === 'usb' && d.state === 'device'), [devices])
   const [tab, setTab] = useState<Tab>('pair')
   const [host, setHost] = useState('')
   const [pairPort, setPairPort] = useState('')

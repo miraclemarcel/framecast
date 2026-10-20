@@ -136,8 +136,8 @@ export const FRAME_FINISHES: Record<FrameFinishId, FrameFinish> = {
   obsidian: {
     id: 'obsidian',
     name: 'Obsidian',
-    rim: ['#3a3d43', '#1b1d21'],
-    rimHighlight: 'rgba(255,255,255,0.14)',
+    rim: ['#4a4e56', '#23262b'],
+    rimHighlight: 'rgba(255,255,255,0.18)',
     button: '#2b2e33',
     bezel: '#050607'
   },

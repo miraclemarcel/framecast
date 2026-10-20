@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* The Vite root is src/renderer; components also live in src/features and src/components. */
+@source '../';
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {

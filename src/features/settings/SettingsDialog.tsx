@@ -39,7 +39,7 @@ function FramePreview({ id, finish, selected, onSelect }: { id: FrameProfileId; 
   const profile = FRAME_PROFILES[id]
   const url = useMemo(() => {
     const geom = computeFrameGeometry(profile, { width: 90, height: 195 })
-    return svgDataUrl(renderFrameSvg(geom, profile, getFinish(finish), { showButtons: true }).base)
+    return svgDataUrl(renderFrameSvg(geom, profile, getFinish(finish), { showButtons: true, screenFill: '#2a3342' }).base)
   }, [profile, finish])
   return (
     <button

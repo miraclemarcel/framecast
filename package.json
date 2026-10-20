@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Mirror and control a real Android phone inside a realistic device frame.",
   "author": "miraclemarcel",
-  "license": "Apache-2.0",
+  "license": "UNLICENSED",
   "private": true,
   "main": "./out/main/index.js",
   "scripts": {
@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
     "test": "vitest run",
     "test:watch": "vitest",
-    "dist": "npm run fetch-deps && npm run typecheck && npm run build && electron-builder --win --x64"
+    "dist": "npm run fetch-deps && npm run typecheck && npm test && npm run build && electron-builder --win --x64",
+    "make-icon": "electron scripts/make-icon.cjs"
   },
   "dependencies": {
     "lucide-react": "^1.60.0",
@@ -37,5 +38,58 @@
     "typescript": "^7.0.2",
     "vite": "^8.3.4",
     "vitest": "^5.0.5"
+  },
+  "build": {
+    "appId": "com.framecast.app",
+    "productName": "FrameCast",
+    "copyright": "Copyright © 2026 miraclemarcel",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "out/**/*",
+      "package.json",
+      "!**/*.map"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/bin",
+        "to": "bin",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "THIRD_PARTY_NOTICES.md",
+        "to": "THIRD_PARTY_NOTICES.md"
+      },
+      {
+        "from": "licenses",
+        "to": "licenses"
+      }
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "FrameCast",
+      "artifactName": "FrameCast-Setup-${version}-x64.${ext}",
+      "uninstallDisplayName": "FrameCast"
+    }
   }
 }

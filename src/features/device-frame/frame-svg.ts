@@ -3,6 +3,8 @@ import type { FrameFinish, FrameProfile } from './profiles'
 
 export interface FrameSvgOptions {
   showButtons: boolean
+  /** Screen backdrop color (black by default; previews use a lighter fill). */
+  screenFill?: string
 }
 
 export interface FrameSvg {
@@ -104,7 +106,7 @@ export function renderFrameSvg(
   }
 
   // Black screen backdrop, visible before the first video frame arrives.
-  parts.push(roundedRect(screen.x, screen.y, screen.width, screen.height, screen.radius, 'fill="#000"'))
+  parts.push(roundedRect(screen.x, screen.y, screen.width, screen.height, screen.radius, `fill="${opts.screenFill ?? '#000'}"`))
 
   const overlay: string[] = []
   const cutout = profile.cutout
